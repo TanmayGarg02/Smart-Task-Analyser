@@ -64,4 +64,19 @@ Request body:
     "priority": 8,
     "dependencies": []
 }
+````
 
+
+#### b. Analyze Tasks
+
+`POST /api/tasks/analyze/`
+
+Request body:
+````json
+{
+    "tasks": [
+        {"id": 1, "title": "Fix bug", "deadline": "2025-12-01", "effort": 3, "priority": 8, "dependencies": []}
+    ],
+    "strategy": "overall"
+}
+````
