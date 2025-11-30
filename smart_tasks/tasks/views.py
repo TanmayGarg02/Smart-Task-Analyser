@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Task
 from .serializers import TaskSerializer
-from .strategies import compute_score
+from .strategies import compute_score, has_cycle
 
 
 @api_view(["POST"])
@@ -23,8 +23,11 @@ def analyze_tasks(request):
     if not isinstance(tasks, list) or len(tasks) == 0:
         return Response({"error": "Task list is required"}, status=400)
 
+    cycle_exists = has_cycle(tasks)
+
     for task in tasks:
         task["score"] = compute_score(task, tasks, strategy)
+        task["has_cycle"] = cycle_exists
 
     tasks.sort(key=lambda t: t["score"], reverse=True)
 
@@ -42,8 +45,11 @@ def suggest_tasks(request):
     serializer = TaskSerializer(tasks, many=True)
     task_list = serializer.data
 
+    cycle_exists = has_cycle(task_list)
+
     for task in task_list:
         task["score"] = compute_score(task, task_list, strategy)
+        task["has_cycle"] = cycle_exists
 
     task_list.sort(key=lambda t: t["score"], reverse=True)
     top_three = task_list[:3]
@@ -68,6 +74,9 @@ def get_reason(task):
 
     if task.get("score", 0) >= 50:
         reasons.append("Overall high impact")
+
+    if task.get("has_cycle"):
+        reasons.append("Task is part of a circular dependency")
 
     if not reasons:
         return "Important task based on selected strategy"
