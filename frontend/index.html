@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Task Analyzer</h1>
+
+        <form id="taskForm">
+            <input type="text" id="title" placeholder="Task Title" required>
+            <input type="date" id="due_date" placeholder="Due Date" required>
+            <input type="number" id="effort" placeholder="Estimated Effort (hours)" min="1" required>
+            <input type="number" id="importance" placeholder="Importance (1-10)" min="1" max="10" required>
+            <input type="text" id="dependencies" placeholder="Dependencies (comma-separated IDs)">
+            <button type="submit">Add Task</button>
+        </form>
+
+        <h2>Tasks Added</h2>
+        <div id="taskList" class="task-list">
+            <p>No tasks added yet.</p>
+        </div>
+
+        <h2>Analyze Tasks</h2>
+        <select id="strategySelect">
+            <option value="overall">Smart Balance</option>
+            <option value="priority">High Impact</option>
+            <option value="deadline">Deadline Driven</option>
+            <option value="effort">Fastest Wins</option>
+        </select>
+        <button id="analyzeBtn">Analyze</button>
+        <button id="suggestBtn">Suggest Top 3 Tasks</button>
+
+        <h2>Analysis Result</h2>
+        <div id="resultList" class="result-list">
+            <p>No analysis yet.</p>
+        </div>
+
+        <h2>Top 3 Suggestions</h2>
+        <div id="suggestList" class="result-list">
+            <p>No suggestions yet.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
